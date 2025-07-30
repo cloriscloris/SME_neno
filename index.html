@@ -711,6 +711,88 @@
             color: #64748b;
             font-size: 14px;
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 20px 24px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .sync-btn {
+            background: rgba(30, 64, 175, 0.8) !important;
+            color: white !important;
+            border: 1px solid rgba(30, 64, 175, 0.3) !important;
+            box-shadow: 0 8px 32px rgba(30, 64, 175, 0.2) !important;
+            backdrop-filter: blur(20px) !important;
+        }
+
+        .sync-btn:hover {
+            transform: translateY(-4px) !important;
+            box-shadow: 0 12px 40px rgba(30, 64, 175, 0.3) !important;
+            background: rgba(30, 64, 175, 0.9) !important;
+            border-color: rgba(30, 64, 175, 0.5) !important;
+        }
+
+        .manual-btn {
+            background: rgba(30, 64, 175, 0.8) !important;
+            color: white !important;
+            border: 1px solid rgba(30, 64, 175, 0.3) !important;
+            box-shadow: 0 8px 32px rgba(30, 64, 175, 0.2) !important;
+            backdrop-filter: blur(20px) !important;
+        }
+
+        .manual-btn:hover {
+            transform: translateY(-4px) !important;
+            box-shadow: 0 12px 40px rgba(30, 64, 175, 0.3) !important;
+            background: rgba(30, 64, 175, 0.9) !important;
+            border-color: rgba(30, 64, 175, 0.5) !important;
+        }
+
+        /* 确保按钮样式优先级 */
+        .action-btn.sync-btn,
+        .action-btn.manual-btn {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: 80px !important;
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            border-radius: 16px !important;
+            transition: all 0.3s ease !important;
+        }
     </style>
 </head>
 <body>
@@ -958,14 +1040,9 @@
                     <p class="page-subtitle">Automatically identify and match invoices from emails</p>
                 </div>
 
-                <div class="content-card">
-                    <div class="card-header">
-                        <h2 class="card-title">Invoice Actions</h2>
-                        <div style="display: flex; gap: 12px;">
-                            <button class="btn btn-primary" onclick="syncGmail()">Sync Gmail</button>
-                            <button class="btn btn-success" onclick="openInvoiceModal()">Add Invoice Manually</button>
-                        </div>
-                    </div>
+                <div class="action-buttons">
+                    <button class="action-btn sync-btn" onclick="syncGmail()">Sync Gmail</button>
+                    <button class="action-btn manual-btn" onclick="openInvoiceModal()">Add Invoice Manually</button>
                 </div>
 
                 <div class="stats-grid">
