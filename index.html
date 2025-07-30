@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neno - Smart Financial Management</title>
+            <title>Neno</title>
     <style>
         * {
             margin: 0;
@@ -13,29 +13,48 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8fafc;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             color: #1e293b;
             line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+            z-index: -1;
         }
 
         .app-container {
             display: flex;
             min-height: 100vh;
+            backdrop-filter: blur(5px);
         }
 
         .sidebar {
             width: 280px;
-            background: white;
-            border-right: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(226, 232, 240, 0.8);
             padding: 24px 0;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
         }
 
         .sidebar-header {
             padding: 0 24px 24px 24px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
             margin-bottom: 24px;
         }
 
@@ -75,17 +94,36 @@
             transition: all 0.3s ease;
             cursor: pointer;
             border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.02));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-item:hover::before {
+            opacity: 1;
         }
 
         .nav-item:hover {
-            background: #f1f5f9;
             color: #1e293b;
+            transform: translateX(4px);
         }
 
         .nav-item.active {
-            background: #eff6ff;
+            background: rgba(239, 246, 255, 0.8);
             color: #1e40af;
             border-left-color: #1e40af;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .nav-icon {
@@ -95,6 +133,8 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
+            position: relative;
+            z-index: 1;
         }
 
         .nav-icon svg {
@@ -118,13 +158,15 @@
             height: 6px;
             border-radius: 50%;
             background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
         }
 
         .account-info {
             padding: 16px 24px;
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
+            background: rgba(248, 250, 252, 0.8);
+            border-top: 1px solid rgba(226, 232, 240, 0.8);
             margin-top: auto;
+            backdrop-filter: blur(10px);
         }
 
         .account-name {
@@ -142,6 +184,7 @@
             flex: 1;
             margin-left: 280px;
             padding: 32px;
+            backdrop-filter: blur(5px);
         }
 
         .page-header {
@@ -168,11 +211,19 @@
         }
 
         .stat-card {
-            background: white;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
             padding: 24px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            border-color: rgba(59, 130, 246, 0.2);
         }
 
         .stat-header {
@@ -208,12 +259,19 @@
         }
 
         .content-card {
-            background: white;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
             padding: 24px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
             margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            border-color: rgba(59, 130, 246, 0.2);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
         }
 
         .card-header {
@@ -232,32 +290,52 @@
         .btn {
             padding: 8px 16px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 14px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: #1e40af;
+            background: rgba(30, 64, 175, 0.9);
             color: white;
+            border: 1px solid rgba(30, 64, 175, 0.3);
         }
 
         .btn-success {
-            background: #059669;
+            background: rgba(5, 150, 105, 0.9);
             color: white;
+            border: 1px solid rgba(5, 150, 105, 0.3);
         }
 
         .btn-secondary {
-            background: #f3f4f6;
+            background: rgba(255, 255, 255, 0.8);
             color: #374151;
-            border: 1px solid #d1d5db;
+            border: 1px solid rgba(209, 213, 219, 0.8);
         }
 
         .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .transaction-list {
@@ -271,9 +349,17 @@
             justify-content: space-between;
             align-items: center;
             padding: 16px;
-            border-radius: 8px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .transaction-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(59, 130, 246, 0.2);
+            transform: translateX(4px);
         }
 
         .transaction-info h4 {
@@ -305,32 +391,37 @@
             border-radius: 12px;
             font-size: 12px;
             font-weight: 500;
+            backdrop-filter: blur(10px);
         }
 
         .status-categorized {
-            background: #dbeafe;
+            background: rgba(219, 234, 254, 0.8);
             color: #1e40af;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
         .status-matched {
-            background: #d1fae5;
+            background: rgba(209, 250, 229, 0.8);
             color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .status-pending {
-            background: #fef3c7;
+            background: rgba(254, 243, 199, 0.8);
             color: #d97706;
+            border: 1px solid rgba(245, 158, 11, 0.3);
         }
 
         .category-tag {
             display: inline-block;
             padding: 2px 8px;
-            background: #e0e7ff;
+            background: rgba(224, 231, 255, 0.8);
             color: #3730a3;
             border-radius: 12px;
             font-size: 12px;
             font-weight: 500;
             margin-left: 8px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
         }
 
         .connection-grid {
@@ -340,10 +431,17 @@
         }
 
         .connection-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 16px;
             padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .connection-card:hover {
+            border-color: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
         }
 
         .connection-header {
@@ -363,20 +461,37 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            backdrop-filter: blur(10px);
         }
 
         .status-connected {
-            background: #d1fae5;
+            background: rgba(209, 250, 229, 0.8);
             color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .api-input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid rgba(209, 213, 219, 0.8);
             border-radius: 8px;
             font-size: 14px;
             margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            color: #1e293b;
+            transition: all 0.3s ease;
+        }
+
+        .api-input:focus {
+            outline: none;
+            border-color: rgba(59, 130, 246, 0.5);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .api-input::placeholder {
+            color: #9ca3af;
         }
 
         .modal {
@@ -387,17 +502,20 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .modal-content {
-            background-color: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
             margin: 5% auto;
             padding: 32px;
-            border-radius: 12px;
+            border-radius: 20px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         .modal-header {
@@ -418,6 +536,7 @@
             font-size: 24px;
             font-weight: bold;
             cursor: pointer;
+            transition: color 0.3s ease;
         }
 
         .close:hover {
@@ -438,15 +557,24 @@
         .form-input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid rgba(209, 213, 219, 0.8);
             border-radius: 8px;
             font-size: 14px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            color: #1e293b;
+            transition: all 0.3s ease;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #1e40af;
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            border-color: rgba(59, 130, 246, 0.5);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
         }
 
         .modal-actions {
@@ -473,9 +601,17 @@
             justify-content: space-between;
             align-items: center;
             padding: 16px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .rule-item:hover, .template-item:hover, .automation-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(59, 130, 246, 0.2);
+            transform: translateX(4px);
         }
 
         .rule-info, .template-info {
@@ -518,9 +654,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background-color: rgba(209, 213, 219, 0.8);
             -webkit-transition: .4s;
             transition: .4s;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
         }
 
         .slider:before {
@@ -533,28 +671,22 @@
             background-color: white;
             -webkit-transition: .4s;
             transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         input:checked + .slider {
-            background-color: #1e40af;
+            background-color: rgba(30, 64, 175, 0.8);
         }
 
         input:focus + .slider {
-            box-shadow: 0 0 1px #1e40af;
+            box-shadow: 0 0 1px rgba(30, 64, 175, 0.8);
         }
 
         input:checked + .slider:before {
             -webkit-transform: translateX(20px);
             -ms-transform: translateX(20px);
             transform: translateX(20px);
-        }
-
-        .slider.round {
-            border-radius: 20px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
         }
 
         .settings-grid {
@@ -586,7 +718,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">Neno</div>
-                <div class="sidebar-subtitle">Financial Management</div>
+                <div class="sidebar-subtitle"></div>
             </div>
 
             <nav class="nav-section">
@@ -1166,7 +1298,7 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Neno Financial Management System started');
+            console.log('Neno System started');
             console.log('Wise Token:', 'e0940274-9b28-4025-b599-bfd2d9b1414a');
         });
 
